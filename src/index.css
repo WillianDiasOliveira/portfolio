@@ -1,0 +1,819 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Portfolio editorial fonts */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap");
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root, .light {
+    --background: 36 30% 97%;
+    --foreground: 25 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 25 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 25% 12%;
+
+    /* Brand Colors - Softer Orange */
+    --primary: 22 75% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 199 70% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --success: 133 50% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --highlight: 263 50% 50%;
+    --highlight-foreground: 0 0% 100%;
+
+    --muted: 33 22% 94%;
+    --muted-foreground: 25 12% 45%;
+
+    --accent: 33 35% 95%;
+    --accent-foreground: 22 60% 38%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 30 18% 90%;
+    --input: 30 18% 92%;
+    --ring: 22 75% 52%;
+
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(22 75% 52%) 0%, hsl(28 70% 56%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(199 70% 45%) 0%, hsl(210 65% 50%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(22 75% 52%) 0%, hsl(35 65% 55%) 100%);
+
+    /* Shadows — refined, layered */
+    --shadow-soft: 0 1px 2px hsl(25 20% 20% / 0.04), 0 1px 3px hsl(25 20% 20% / 0.06);
+    --shadow-medium: 0 4px 12px hsl(25 20% 20% / 0.06), 0 2px 4px hsl(25 20% 20% / 0.04);
+    --shadow-strong: 0 12px 32px hsl(25 20% 20% / 0.1), 0 4px 8px hsl(25 20% 20% / 0.05);
+
+    /* Sidebar Light — ivory tone */
+    --sidebar-background: 36 28% 95%;
+    --sidebar-foreground: 25 22% 16%;
+    --sidebar-primary: 22 75% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 33 35% 92%;
+    --sidebar-accent-foreground: 22 60% 38%;
+    --sidebar-border: 30 18% 88%;
+    --sidebar-ring: 22 75% 52%;
+
+    --transition-smooth: all 0.2s ease;
+  }
+
+  .dark {
+    --background: 240 15% 9%;
+    --foreground: 240 5% 85%;
+
+    --card: 240 12% 12%;
+    --card-foreground: 240 5% 85%;
+
+    --popover: 240 12% 12%;
+    --popover-foreground: 240 5% 85%;
+
+    /* Brand Colors */
+    --primary: 18 85% 60%;
+    --primary-foreground: 240 15% 9%;
+
+    --secondary: 199 70% 50%;
+    --secondary-foreground: 0 0% 100%;
+
+    --success: 133 50% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --highlight: 263 50% 55%;
+    --highlight-foreground: 0 0% 100%;
+
+    --muted: 240 10% 16%;
+    --muted-foreground: 240 5% 60%;
+
+    --accent: 240 10% 18%;
+    --accent-foreground: 240 5% 80%;
+
+    --destructive: 0 60% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 10% 20%;
+    --input: 240 10% 20%;
+    --ring: 18 85% 60%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(18 85% 55%) 0%, hsl(25 80% 60%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(199 70% 45%) 0%, hsl(210 65% 50%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(18 85% 55%) 0%, hsl(35 75% 55%) 100%);
+
+    /* Shadows Dark */
+    --shadow-soft: 0 1px 3px hsl(0 0% 0% / 0.15);
+    --shadow-medium: 0 4px 12px hsl(0 0% 0% / 0.2);
+    --shadow-strong: 0 8px 24px hsl(0 0% 0% / 0.3);
+
+    /* Sidebar Dark */
+    --sidebar-background: 240 15% 7%;
+    --sidebar-foreground: 240 5% 80%;
+    --sidebar-primary: 18 85% 60%;
+    --sidebar-primary-foreground: 240 15% 9%;
+    --sidebar-accent: 240 10% 14%;
+    --sidebar-accent-foreground: 240 5% 85%;
+    --sidebar-border: 240 10% 15%;
+    --sidebar-ring: 18 85% 60%;
+
+    --transition-smooth: all 0.2s ease;
+  }
+}
+
+/* Toast particle/dust animation */
+@keyframes particle-float {
+  0% {
+    opacity: 0.8;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0.3);
+  }
+}
+
+.toast-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(22 75% 52% / 0.6);
+  pointer-events: none;
+  animation: particle-float 2s ease-out forwards;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 18px;
+    height: 18px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.4);
+    border-radius: 6px;
+    border: 2px solid hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.6);
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.4) hsl(var(--muted));
+  }
+}
+
+/* Comprovante Campinas — estilização da ficha original embutida (escopo) */
+.campinas-ficha { color: #111; background: #fff; }
+.campinas-ficha table { width: 100%; border-collapse: collapse; background: #fff; margin: 0 0 6px 0; }
+.campinas-ficha td, .campinas-ficha th { border: 1px solid #b8b8b8; padding: 5px 7px; vertical-align: top; font-size: 12px; line-height: 1.35; }
+.campinas-ficha th { background: #f3f4f6; font-weight: 600; }
+.campinas-ficha img { max-width: 110px; height: auto; }
+.campinas-ficha a { color: #0a58ca; text-decoration: none; }
+.campinas-ficha p, .campinas-ficha div { margin: 0; }
+
+/* Print styles — used when "Baixar Portfólio" triggers window.print() */
+@media print {
+  @page { size: A4; margin: 12mm; }
+  html, body { background: #fff !important; }
+  /* Hide floating UI when exporting */
+  [data-no-print="true"],
+  .fixed { display: none !important; }
+  /* Avoid clipping cards/sections across pages */
+  section, article, .card, [class*="rounded-"] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  a { color: inherit; text-decoration: none; }
+}
+
+/* ============================================
+   Portfolio (Willian Dias) — escopo isolado
+   ============================================ */
+.portfolio-scope {
+  font-family: "DM Sans", "Inter", system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+}
+/* Compensa o zoom 100% padrão do navegador para evitar que o
+   portfolio fique excessivamente grande em telas comuns (laptops). */
+.portfolio-root {
+  zoom: 0.88;
+  background-color: #0a0a0c;
+}
+@media (min-width: 1600px) {
+  .portfolio-root { zoom: 0.92; }
+}
+@media (min-width: 1900px) {
+  .portfolio-root { zoom: 1; }
+}
+@media (max-width: 768px) {
+  .portfolio-root { zoom: 1; }
+}
+.portfolio-scope .font-display {
+  font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+.portfolio-scope .font-mono-code {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.portfolio-scope ::selection {
+  background: rgba(129, 140, 248, 0.35);
+  color: #fff;
+}
+
+/* Glow utilitário */
+.portfolio-scope .glow-ring {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 30px 80px -20px rgba(79, 70, 229, 0.35);
+}
+
+/* Hero title gradient animado */
+@keyframes portfolio-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.portfolio-scope .text-gradient {
+  background: linear-gradient(110deg, #c084fc 0%, #818cf8 35%, #38bdf8 65%, #c084fc 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: portfolio-gradient 8s ease infinite;
+}
+
+/* Noise overlay sutil */
+.portfolio-scope .noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.7'/></svg>");
+}
+
+/* ============================================
+   Editorial — versão papel/revista
+   ============================================ */
+.editorial-scope {
+  font-family: "Fraunces", "Instrument Serif", Georgia, serif;
+  color: #1a1814;
+  background: #f4ede1;
+  font-feature-settings: "ss01", "ss02", "cv01";
+  -webkit-font-smoothing: antialiased;
+}
+.editorial-scope .font-serif-display {
+  font-family: "Instrument Serif", "Fraunces", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.editorial-scope .font-fraunces {
+  font-family: "Fraunces", "Instrument Serif", Georgia, serif;
+}
+.editorial-scope .font-mono-ed {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.editorial-scope .font-grotesk {
+  font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+}
+.editorial-scope ::selection {
+  background: #c4654a;
+  color: #f4ede1;
+}
+
+/* Drop cap inicial do parágrafo */
+.editorial-scope .drop-cap::first-letter {
+  font-family: "Instrument Serif", Georgia, serif;
+  float: left;
+  font-size: 5.2rem;
+  line-height: 0.85;
+  padding: 0.3rem 0.6rem 0 0;
+  color: #c4654a;
+  font-weight: 400;
+}
+
+/* Marquee horizontal */
+@keyframes editorial-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.editorial-scope .marquee-track {
+  animation: editorial-marquee 40s linear infinite;
+}
+
+/* Linha guia/régua */
+.editorial-scope .rule {
+  height: 1px;
+  background: #1a1814;
+  opacity: 0.85;
+}
+.editorial-scope .rule-thin {
+  height: 1px;
+  background: #1a1814;
+  opacity: 0.18;
+}
+
+/* Texto rotacionado lateral */
+.editorial-scope .rotate-side {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Grão de papel */
+.editorial-scope .paper-grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.09  0 0 0 0 0.08  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+}
+
+/* ============================================
+   Dev portfolio — engineer · charcoal + champagne
+   ============================================ */
+.dev-scope {
+  font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+  background: #0c0d10;
+  color: #e8e6e0;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+}
+.dev-scope .font-serif {
+  font-family: "Fraunces", "Instrument Serif", Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.025em;
+}
+.dev-scope .font-mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.dev-scope ::selection {
+  background: #d4a574;
+  color: #0c0d10;
+}
+/* card hover */
+.dev-scope .surface {
+  background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.012));
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: border-color 250ms ease, transform 350ms cubic-bezier(0.22,1,0.36,1), background 250ms ease;
+}
+.dev-scope .surface:hover {
+  border-color: rgba(212,165,116,0.35);
+}
+.dev-scope .hairline {
+  background: rgba(255,255,255,0.08);
+  height: 1px;
+}
+.dev-scope .vein {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+/* status dot */
+@keyframes dev-ping {
+  0% { transform: scale(0.85); opacity: 0.9; }
+  80%, 100% { transform: scale(2.2); opacity: 0; }
+}
+.dev-scope .status-dot { position: relative; }
+.dev-scope .status-dot::after {
+  content: ""; position: absolute; inset: 0; border-radius: 9999px;
+  background: #6ee7b7; animation: dev-ping 1.6s ease-out infinite;
+}
+/* Marquee */
+@keyframes dev-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.dev-scope .marquee-x { animation: dev-marquee 50s linear infinite; }
+/* Subtle vignette */
+.dev-scope .vignette::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(ellipse 100% 70% at 50% 0%, rgba(212,165,116,0.06), transparent 60%);
+}
+
+
+/* =========================================================================
+   Portfolio — NEO/CREAM BRUTALIST re-skin (v05)
+   Scoped to .portfolio-root so the rest of the app is unaffected.
+   Palette: bone #f3eee4 / ink #0a0a0a / electric #2547ff / acid #d9ff3c / rose #ff5b8a
+   ========================================================================= */
+.portfolio-root {
+  --pf-bone: #0b0b0c;
+  --pf-bone-2: #111114;
+  --pf-ink: #ededed;
+  --pf-ink-2: #a1a1a6;
+  --pf-line: #232327;
+  --pf-blue: #ededed;
+  --pf-acid: #ededed;
+  --pf-rose: #ededed;
+  --pf-rust: #ededed;
+  --pf-paper: #ededed;
+  background: var(--pf-bone) !important;
+  color: var(--pf-ink) !important;
+  font-family: "Space Grotesk", "Inter", system-ui, sans-serif !important;
+  --pf-mono: "JetBrains Mono", ui-monospace, monospace;
+  --pf-serif: "Instrument Serif", "Fraunces", Georgia, serif;
+  --pf-sans: "Space Grotesk", "Inter", system-ui, sans-serif;
+}
+
+/* Paper-grain + dotted grid background */
+.portfolio-root::before {
+  content: none !important;
+}
+.portfolio-root::after { content: none !important; display: none !important; }
+
+/* === Reset legacy ember helpers used by hero JSX === */
+.portfolio-root .pf-led {
+  width: 9px; height: 9px; border-radius: 9999px;
+  background: var(--pf-ink);
+  box-shadow: none;
+  display: inline-block;
+  animation: pf-blink 1.4s steps(2) infinite;
+}
+@keyframes pf-blink { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.portfolio-root .pf-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border-radius: 9999px;
+  background: transparent !important;
+  border: 1px solid var(--pf-line) !important;
+  font-family: var(--pf-mono); font-size: 11px; letter-spacing: 0.04em;
+  color: var(--pf-ink) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.portfolio-root .pf-frame { position: relative; }
+.portfolio-root .pf-frame::before,
+.portfolio-root .pf-frame::after,
+.portfolio-root .pf-frame > .pf-frame-bl,
+.portfolio-root .pf-frame > .pf-frame-br { content: none !important; display: none !important; }
+
+.portfolio-root .pf-cta-primary {
+  background: var(--pf-ink) !important;
+  color: var(--pf-bone) !important;
+  border: 1px solid var(--pf-ink) !important;
+  border-radius: 9999px !important;
+  box-shadow: none !important;
+  transition: transform .15s ease, box-shadow .15s ease !important;
+}
+.portfolio-root .pf-cta-primary:hover {
+  transform: none !important;
+  opacity: 0.88;
+}
+.portfolio-root .pf-cta-ghost {
+  background: transparent !important;
+  color: var(--pf-ink) !important;
+  border: 1px solid var(--pf-line) !important;
+  border-radius: 9999px !important;
+  box-shadow: none !important;
+}
+.portfolio-root .pf-cta-ghost:hover {
+  border-color: var(--pf-ink) !important;
+  background: transparent !important;
+}
+
+.portfolio-root .pf-name-serif {
+  background: none !important;
+  -webkit-text-fill-color: var(--pf-ink-2) !important;
+  color: var(--pf-ink-2) !important;
+  filter: none !important;
+}
+.portfolio-root .pf-serif {
+  font-family: var(--pf-serif) !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+}
+
+/* === Headings: brutal display === */
+.portfolio-root h1,
+.portfolio-root h2,
+.portfolio-root h3 {
+  font-family: var(--pf-sans) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--pf-ink) !important;
+  text-shadow: none !important;
+}
+
+/* === Translate legacy violet/fuchsia/cyan classes used across sections === */
+.portfolio-root [class*="text-violet-"],
+.portfolio-root [class*="text-fuchsia-"],
+.portfolio-root [class*="text-cyan-"],
+.portfolio-root [class*="text-purple-"] { color: var(--pf-ink) !important; }
+.portfolio-root [class*="bg-violet-"],
+.portfolio-root [class*="bg-fuchsia-"],
+.portfolio-root [class*="bg-cyan-"],
+.portfolio-root [class*="bg-purple-"] { background-color: transparent !important; color: var(--pf-ink) !important; }
+.portfolio-root [class*="border-violet-"],
+.portfolio-root [class*="border-fuchsia-"],
+.portfolio-root [class*="border-cyan-"],
+.portfolio-root [class*="border-purple-"] { border-color: var(--pf-line) !important; }
+.portfolio-root [class*="shadow-violet-"],
+.portfolio-root [class*="shadow-fuchsia-"],
+.portfolio-root [class*="shadow-cyan-"],
+.portfolio-root [class*="shadow-purple-"] { box-shadow: none !important; }
+
+/* Gradient text → solid blue */
+.portfolio-root .bg-clip-text.text-transparent {
+  background-image: none !important;
+  -webkit-text-fill-color: var(--pf-ink) !important;
+  color: var(--pf-ink) !important;
+}
+
+/* Force text color on common dark utilities */
+.portfolio-root .text-white,
+.portfolio-root .text-white\/90,
+.portfolio-root .text-white\/80,
+.portfolio-root .text-white\/70,
+.portfolio-root .text-white\/60,
+.portfolio-root .text-white\/50,
+.portfolio-root .text-white\/40 { color: var(--pf-ink) !important; }
+.portfolio-root .text-white\/70,
+.portfolio-root .text-white\/60,
+.portfolio-root .text-white\/50,
+.portfolio-root .text-white\/40 { opacity: 0.78; }
+
+/* Frosty surfaces become bone with hard black hairline */
+.portfolio-root [class*="bg-white/[0.0"],
+.portfolio-root [class*="bg-white/5"],
+.portfolio-root [class*="bg-white/10"],
+.portfolio-root [class*="bg-black/40"],
+.portfolio-root [class*="bg-black/50"],
+.portfolio-root [class*="bg-black/60"] {
+  background-color: var(--pf-bone-2) !important;
+  border: 1px solid var(--pf-line) !important;
+  backdrop-filter: none !important;
+  color: var(--pf-ink) !important;
+}
+.portfolio-root [class*="from-[#0"][class*="to-[#0"],
+.portfolio-root [class*="from-white/"],
+.portfolio-root [class*="to-white/"] {
+  background-image: none !important;
+  background-color: var(--pf-bone-2) !important;
+}
+.portfolio-root [class*="border-white/"] { border-color: var(--pf-line) !important; }
+
+/* Sharp corners + hard offset shadow on every card */
+.portfolio-root .rounded-3xl,
+.portfolio-root .rounded-2xl,
+.portfolio-root .rounded-xl { border-radius: 10px !important; }
+.portfolio-root .rounded-lg,
+.portfolio-root .rounded-md { border-radius: 8px !important; }
+.portfolio-root .rounded-full { border-radius: 9999px !important; }
+
+.portfolio-root [class*="shadow-2xl"],
+.portfolio-root [class*="shadow-xl"],
+.portfolio-root [class*="shadow-lg"] {
+  box-shadow: none !important;
+}
+
+/* Background ember halos in hero JSX (inline radial gradients) — neutralize */
+.portfolio-root .fixed.inset-0.pointer-events-none > div { display: none !important; }
+
+/* Section h2 — punch */
+.portfolio-root section h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem) !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.035em !important;
+  font-weight: 500 !important;
+}
+
+/* ASCII rule above sections becomes a thick ink bar */
+.portfolio-root section[id]:not(#hero):not(#projects-carousel)::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: var(--pf-line);
+  margin: 0 auto 48px auto;
+  max-width: 100%;
+}
+
+/* Mono labels */
+.portfolio-root .font-mono,
+.portfolio-root [data-no-translate].font-mono { font-family: var(--pf-mono) !important; }
+.portfolio-root .uppercase.tracking-\[0\.3em\],
+.portfolio-root .uppercase.tracking-widest {
+  font-family: var(--pf-mono);
+  color: var(--pf-ink);
+  opacity: 0.7;
+}
+
+/* Buttons (generic, non-pf) → brutalist */
+.portfolio-root button:not(.pf-cta-primary):not(.pf-cta-ghost),
+.portfolio-root a[class*="rounded"]:not(.pf-cta-primary):not(.pf-cta-ghost) {
+  letter-spacing: 0.02em;
+}
+
+/* Dialogs → bone with thick ink border */
+.portfolio-root [role="dialog"],
+[data-radix-dialog-content] {
+  background: var(--pf-bone-2) !important;
+  color: var(--pf-ink) !important;
+  border: 1px solid var(--pf-line) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6) !important;
+}
+
+/* Selection */
+.portfolio-root ::selection { background: var(--pf-ink); color: var(--pf-bone); }
+
+/* === Hero-specific brutalist atoms === */
+.pf-brut-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  background: transparent; color: var(--pf-ink-2);
+  border: 1px solid var(--pf-line);
+  border-radius: 9999px;
+}
+.pf-sticker {
+  position: absolute;
+  background: transparent;
+  color: var(--pf-ink-2);
+  border: 1px solid var(--pf-line);
+  box-shadow: none;
+  padding: 4px 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+.pf-sticker.--blue,
+.pf-sticker.--rose,
+.pf-sticker.--ink { background: transparent; color: #ffffff; border-color: rgba(255,255,255,0.85); border-width: 1.5px; }
+
+@keyframes pf-marquee-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.pf-marquee {
+  background: transparent;
+  color: var(--pf-ink-2);
+  border-top: 1px solid var(--pf-line);
+  border-bottom: 1px solid var(--pf-line);
+  overflow: hidden;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 400;
+}
+.pf-marquee .pf-marquee-track {
+  display: flex; gap: 56px; white-space: nowrap;
+  animation: pf-marquee-x 38s linear infinite;
+  padding: 14px 0;
+  font-size: 14px; letter-spacing: 0.04em;
+}
+.pf-marquee .pf-marquee-track span { display: inline-flex; align-items: center; gap: 56px; }
+.pf-marquee .pf-marquee-track .dot { width: 4px; height: 4px; border-radius: 9999px; background: var(--pf-ink-2); }
+
+/* Photo — frameless, dot-stipple fade into background */
+.pf-photo-card {
+  position: relative;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0 0 28px 0;
+  transform: none;
+  border-radius: 0;
+  overflow: visible;
+}
+.pf-photo-card > img {
+  display: block;
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 0%, #000 58%, transparent 96%);
+  mask-image:
+    linear-gradient(to bottom, #000 0%, #000 58%, transparent 96%);
+}
+.pf-photo-card .pf-photo-caption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  text-align: center;
+  font-family: var(--pf-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--pf-ink-2);
+}
+
+/* Side rail — chunky */
+.pf-rail {
+  position: fixed; left: 20px; top: 50%; transform: translateY(-50%);
+  z-index: 65;
+  display: flex; flex-direction: column; gap: 14px;
+  align-items: flex-start;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--pf-ink);
+}
+.pf-rail a {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: flex-start;
+  gap: 10px;
+  height: 18px;
+  padding: 0 14px 0 4px;
+  background: transparent;
+  color: var(--pf-ink-2);
+  cursor: pointer;
+  text-decoration: none;
+}
+.pf-rail .pf-rail-dot {
+  width: 6px; height: 6px; border-radius: 9999px;
+  background: rgba(120, 120, 130, 0.55);
+  opacity: 0.45;
+  transition: all .25s ease;
+}
+.pf-rail .pf-rail-label {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-8px);
+  white-space: nowrap;
+  padding: 8px 16px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  background: var(--pf-bone-2);
+  border: 1px solid var(--pf-line);
+  border-radius: 9999px;
+  color: var(--pf-ink);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .25s ease;
+}
+.pf-rail a:hover .pf-rail-dot,
+.pf-rail:hover a .pf-rail-dot {
+  opacity: 0.85;
+  background: rgba(180, 180, 190, 0.9);
+}
+.pf-rail a:hover .pf-rail-dot {
+  transform: scale(2.8);
+}
+.pf-rail a:hover .pf-rail-label {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+.pf-rail a.is-active .pf-rail-dot {
+  background: rgba(245, 245, 250, 0.95);
+  opacity: 1;
+  transform: scale(1.6);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+}
+@media (max-width: 1100px) { .pf-rail { display: none; } }
+
+/* Boxy stat card */
+.pf-stat {
+  border: 1px solid var(--pf-line);
+  background: transparent;
+  padding: 16px 18px;
+  box-shadow: none;
+  border-radius: 10px;
+}
+.pf-stat .num {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 400; font-size: 32px; line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--pf-ink);
+}
+.pf-stat .lbl {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--pf-ink-2); margin-top: 6px;
+}
+
